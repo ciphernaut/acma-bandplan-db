@@ -7,6 +7,7 @@ The following tasks are planned for future improvements or bug‑fixes in the AC
 - [ ] **Provide a lookup example that includes footnote references** – demonstrate how to join the `allocations` table with the appropriate footnotes.
 - [ ] **Clean up the database of messy region data** – remove duplicate or malformed entries and normalise region names.
 - [ ] **Prevent page numbers from creating duplicate rows in `international_footnotes`** – ensure each footnote is inserted only once.
+- [ ] Fix data import accuracy
 - [ ] Add unit tests for the extraction logic (e.g., verify row counts, footnote mapping).
 - [ ] Improve error handling when PDF parsing fails or tables are missing.
 - [ ] Allow specifying an output database path via command‑line argument.

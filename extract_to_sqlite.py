@@ -140,7 +140,7 @@ def process_table(table, unit):
             # If no merged text, use the extracted common_content or description as common
             common_col = common_content or description
 
-        footnote_ref = ','.join(sorted(set(foot_refs))) if foot_refs else None
+        footnote_ref = sorted(set(foot_refs))[0] if foot_refs else None
         rows.append((frequency_range, unit, r1, r2, r3, description, common_col, footnote_ref))
     return rows
 
@@ -192,7 +192,13 @@ def extract_footnotes(pdf_obj, start_page, end_page, is_australian):
 # ---------------------------------------------------------------------------
 # Main extraction loop
 # ---------------------------------------------------------------------------
-pdf_path = pathlib.Path('/projects/ACMA/Australian Radiofrequency Spectrum Plan 2021_Including general information.pdf')
+import sys
+
+# Determine PDF path: use command‑line argument if provided, otherwise fall back to the bundled file.
+if len(sys.argv) > 1:
+    pdf_path = pathlib.Path(sys.argv[1])
+else:
+    pdf_path = pathlib.Path('/projects/ACMA/Australian Radiofrequency Spectrum Plan 2021_Including general information.pdf')
 with pdfplumber.open(pdf_path) as pdf:
     # Extract footnotes first (pages 112‑119 and 120‑214 in physical numbering)
     extract_footnotes(pdf, 111, 118, True)   # 0-indexed: pages 112-119

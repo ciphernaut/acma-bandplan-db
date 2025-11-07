@@ -29,13 +29,21 @@ python -m venv .venv
 source .venv/bin/activate   # On Windows use `.venv\Scripts\activate`
 
 # Install the dependencies
-pip install PyPDF2 pandas
+pip install pdfplumber pandas PyPDF2
 ```
 
 ---
 ## 🚀 Running the Extraction
 ```bash
+# If you have a local copy of the PDF:
 python extract_to_sqlite.py path/to/bandplan.pdf
+```
+If no argument is supplied, the script will look for the bundled PDF in the repository root.
+The script will:
+1. Parse the PDF and locate the frequency allocation tables.
+2. Extract each row into a structured format.
+3. Store the data in `frequency_allocations.db` in the current directory.
+4. Create two additional tables – `australian_footnotes` (pages 112‑119) and `international_footnotes` (pages 120‑214).
 ```
 The script will:
 1. Parse the PDF and locate the frequency allocation tables.
@@ -47,9 +55,9 @@ The script will:
 ## 📊 Database Schema
 | Table | Columns |
 |-------|---------|
-| `allocations` | `id`, `unit`, `frequency_range`, `region1`, `region2`, `region3`, `common`, `footnote_ref` |
-| `australian_footnotes` | `id`, `page_number`, `text` |
-| `international_footnotes` | `id`, `page_number`, `text` |
+| `allocations` | `frequency_range`, `unit`, `region1`, `region2`, `region3`, `australian_table_of_allocations`, `common`, `footnote_ref` |
+| `australian_footnotes` | `id`, `ref`, `text` |
+| `international_footnotes` | `id`, `ref`, `text` |
 
 The `frequency_range` column stores the range as a string (e.g. `"535–1606.5"`). The `common` column contains any text that was merged across multiple region columns in the original PDF.
 
